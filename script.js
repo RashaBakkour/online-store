@@ -43,7 +43,10 @@ const transitions = {
         button:"login",
         pargr1: "Forgot Password",
         pargr2: " Don't have an account?",
-        link: "Signup"
+        link: "Signup",
+        // alert_title:"Do you want to save the changes?",
+        // confirmButtonText: "Save",
+        // denyButtonText: "Don't save"
     },
     ar:{
         title: "تسجيل الدخول",
@@ -53,7 +56,10 @@ const transitions = {
         button:"تسجيل الدخول",
         pargr1: "نسيت كلمة السر",
         pargr2: " ليس لديك حساب ؟",
-        link: "تسجيل"
+        link: "تسجيل",
+        // alert_title:"هل ترغب في حفظ التغييرات؟",
+        // confirmButtonText: "حفظ",
+        // denyButtonText: "الغاء"
     },
     fr:{
         title: "Connexion",
@@ -63,7 +69,10 @@ const transitions = {
         button:"Connexion",
         pargr1: " Mot de passe oublié",
         pargr2: " Vous n'avez pas de compte ?",
-        link: "Enregistrement"
+        link: "Enregistrement",
+        // alert_title:"Voulez-vous enregistrer les modifications ?",
+        // confirmButtonText: "sauvegarder",
+        // denyButtonText: "Annuler"
     },
     deu:{
         title: "Einloggen",
@@ -73,7 +82,10 @@ const transitions = {
         button:"Einloggen",
         pargr1: "Passwort vergessen",
         pargr2: " Haben Sie kein Konto ?",
-        link: "Registrierung"
+        link: "Registrierung",
+        // alert_title:"Möchten Sie die Änderungen speichern?",
+        // confirmButtonText: "Speichern",
+        // denyButtonText: "Stornierung"
     }
 }
 
@@ -90,28 +102,38 @@ let signUp = document.getElementById("signUp");
 
 const login = document.getElementById('login');
 
-languageSelectTop.addEventListener("change", (event)=>{
-    setLanguage(event.target.value);
+// languageSelectTop.addEventListener("change", (event)=>{
+//     setLanguage(event.target.value);
     
-})
+// })
+// const  saveLanguage = (language) =>{
+//     localStorage.setItem('language', language);
+// }
+
+
+// Apply language preference on page load
+// languageSelectTop.addEventListener('change', (event)=> {
+//     localStorage.getItem('language') || 'en';
+//     setLanguage(event.target.value);
+// });
 
 const setLanguage = (language)=>{
     Swal.fire({
         title: "Do you want to save the changes?",
-        // showDenyButton: true,
         showCancelButton: true,
         confirmButtonText: "Save",
         // denyButtonText: `Don't save`
-      }).then((result) => {
+    }).then((result) => {
         
         if (result.isConfirmed) {
+        //   Swal.fire("Saved!", "", "success");
             localStorage.setItem("language", language);
-          Swal.fire("Saved!", "", "success");
         } else if (result.isDenied) {
+        //   Swal.fire("Changes are not saved", "", "info");
             localStorage.removeItem('language', language);
-          Swal.fire("Changes are not saved", "", "info");
         }
-      });
+    });
+
 
     
     if(language == "ar"){
@@ -128,15 +150,7 @@ const setLanguage = (language)=>{
         login.style.textAlign = 'right';
        
         
-    //    document.body.style.direction="rtl"
-        // document.getElementById('lab_email').dir = 'rtl';
-        // document.getElementById('lab_number').dir = 'rtl';
-        // document.getElementById('lab_password').dir = 'rtl';
-
-        // document.getElementById('email').dir = 'rtl';
-        // document.getElementById('number').dir = 'rtl';
-        // document.getElementById('password').dir = 'rtl';
-        // document.getElementById('p2').dir = 'rtl';
+    //    document.body.style.direction="rtl";
         // document.getElementById('signUp').dir = 'rtl';
         // document.documentElement.dir = 'rtl';
 
@@ -185,6 +199,19 @@ const setLanguage = (language)=>{
 
     
 }
+function getSelectedLanguage() {
+    return localStorage.getItem('language') || 'en'; // default language
+  }
+
+languageSelectTop.addEventListener("change", (event)=>{
+    setLanguage(event.target.value);
+
+})
+
+document.addEventListener('DOMContentLoaded', () => {
+    const selectedLanguage = getSelectedLanguage();
+    setLanguage(selectedLanguage);
+});
 
 
 
@@ -216,24 +243,28 @@ let darkmode = localStorage.getItem('darkmode');
 const themeswitch = document.getElementById('theme-switch');
 
 const enableDarkmode = ()=>{
-    Swal.fire({
-        title: "Do you want to save the Dark Mode?",
-        // showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Save",
-        // denyButtonText: `Don't save`
-      }).then((result) => {
+    // Swal.fire({
+    //     title: "Do you want to save the Dark Mode?",
+    //     showCancelButton: true,
+    //     confirmButtonText: "Save",
+    //   }).then((result) => {
        
-        if (result.isConfirmed) {
-            document.body.classList.add("darkmode");
-            localStorage.setItem("darkmode", 'active');
-          Swal.fire("Saved!", "", "success");
-        } else if (result.isDenied) {
+    //     if (result.isConfirmed) {
+    //         document.body.classList.add("darkmode");
+    //         localStorage.setItem("darkmode", 'active');
+    //     } else if (result.isDenied) {
+    //         document.body.classList.remove("darkmode");
+    //     }
+    //   });
+    if (confirm("Do you want to switch to dark mode?")) {
+        document.body.classList.add("darkmode");
+        localStorage.setItem("darkmode", 'active');
+    }else{
+        if (confirm("Do you want to switch to light mode?")) {
             document.body.classList.remove("darkmode");
-          Swal.fire("Changes are not saved", "", "info");
+            
         }
-      });
-
+    }
     
 }
 

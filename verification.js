@@ -54,9 +54,9 @@ let email = document.getElementById("email");
 let code = document.getElementById("code");
 let btn = document.getElementById("btn");
 
-languageSelectTop.addEventListener("change", (event)=>{
-    setLanguage(event.target.value);
-})
+// languageSelectTop.addEventListener("change", (event)=>{
+//     setLanguage(event.target.value);
+// })
 
 const setLanguage = (language)=>{
     Swal.fire({
@@ -64,15 +64,15 @@ const setLanguage = (language)=>{
         // showDenyButton: true,
         showCancelButton: true,
         confirmButtonText: "Save",
-        // denyButtonText: `Don't save`
+        denyButtonText: `Don't save`
       }).then((result) => {
         
         if (result.isConfirmed) {
             localStorage.setItem("language", language);
-          Swal.fire("Saved!", "", "success");
+            // Swal.fire("Saved!", "", "success");
         } else if (result.isDenied) {
             localStorage.removeItem('language', language);
-          Swal.fire("Changes are not saved", "", "info");
+            // Swal.fire("Changes are not saved", "", "info");
         }
       });
     if(language == "ar"){
@@ -105,27 +105,49 @@ const setLanguage = (language)=>{
     }
 }
 
+function getSelectedLanguage() {
+    return localStorage.getItem('language') || 'en'; // default language
+}
+
+languageSelectTop.addEventListener("change", (event)=>{
+        setLanguage(event.target.value);
+
+})
+
+document.addEventListener('DOMContentLoaded', () => {
+    const selectedLanguage = getSelectedLanguage();
+    setLanguage(selectedLanguage);
+});
+
+
 // dark mode
 let darkmode = localStorage.getItem('darkmode');
 const themeswitch = document.getElementById('theme-switch');
 
 const enableDarkmode = ()=>{
-    Swal.fire({
-        title: "Do you want to save the Dark Mode?",
-        // showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Save",
-        // denyButtonText: `Don't save`
-      }).then((result) => {
-        if (result.isConfirmed) {
-            document.body.classList.add("darkmode");
-            localStorage.setItem("darkmode", 'active');
-          Swal.fire("Saved!", "", "success");
-        } else if (result.isDenied) {
+    // Swal.fire({
+    //     title: "Do you want to save the Dark Mode?",
+    //     showCancelButton: true,
+    //     confirmButtonText: "Save",
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //         document.body.classList.add("darkmode");
+    //         localStorage.setItem("darkmode", 'active');
+    //       Swal.fire("Saved!", "", "success");
+    //     } else if (result.isDenied) {
+    //         document.body.classList.remove("darkmode");
+    //       Swal.fire("Changes are not saved", "", "info");
+    //     }
+    //   });
+    if (confirm("Do you want to switch to dark mode?")) {
+        document.body.classList.add("darkmode");
+        localStorage.setItem("darkmode", 'active');
+    }else{
+        if (confirm("Do you want to switch to light mode?")) {
             document.body.classList.remove("darkmode");
-          Swal.fire("Changes are not saved", "", "info");
+            
         }
-      });
+    }
 }
 
 const disableDarkmode = ()=>{
